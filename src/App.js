@@ -1,6 +1,7 @@
 import Detail from "./components/Detail";
 import Home from "./routes/Home";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import "./styles/styles.css";
 // import styles from "./App.module.css";
 
 const router = createBrowserRouter([
