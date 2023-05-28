@@ -1,15 +1,19 @@
 import { useState, useEffect, useCallback } from "react";
-import Movie from "../components/Movie";
-import dateString from "../Date";
+import { dateString, dateTime } from "../Date";
 import axios from "axios";
 import Weather from "../components/Weather";
+import styles from "./Home.module.css";
 
 function Home() {
   const [loading, setLoading] = useState(true);
-  const [time, setTime] = useState("0600");
+  const [time, setTime] = useState(
+    `${(dateTime.substring(0, 2) - 1).toString().padStart(2, "0")}00`
+  );
   const [weather, setWeather] = useState([]);
   const [disabled, setDisabled] = useState(false);
 
+  const length = 24;
+  const selectTime = Array.from({ length }, (_, index) => index);
   const getWeather = useCallback(async () => {
     const url = `https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst`;
     const options = {
@@ -17,7 +21,10 @@ function Home() {
       pageNo: 1,
       numOfRows: 1000,
       dataType: "JSON",
-      base_date: dateString,
+      base_date:
+        Number(dateTime) > 240000
+          ? (Number(dateString) - 1).toString()
+          : dateString,
       base_time: time,
       nx: 55,
       ny: 127,
@@ -27,6 +34,7 @@ function Home() {
         new URLSearchParams(options).toString()
       );
       const response = await axios.get(`${url}?${resultUrl}`);
+
       const {
         response: {
           body: {
@@ -52,35 +60,35 @@ function Home() {
   useEffect(() => {
     getWeather();
   }, [time, getWeather]);
-
   return (
     <div>
-      <h1>기상 상황</h1>
       {loading ? (
         <h1>로딩 중...</h1>
       ) : (
-        <div>
-          <select onChange={onChange} disabled={disabled}>
-            <option value="0600">AM 06:00</option>
-            <option value="0700">AM 07:00</option>
-            <option value="0800">AM 08:00</option>
-            <option value="0900">AM 09:00</option>
-            <option value="1000">AM 10:00</option>
-            <option value="1100">AM 11:00</option>
-            <option value="1200">AM 12:00</option>
-            <option value="1300">PM 01:00</option>
-            <option value="1400">PM 02:00</option>
-            <option value="1500">PM 03:00</option>
-            <option value="1600">PM 04:00</option>
-            <option value="1700">PM 05:00</option>
-            <option value="1800">PM 06:00</option>
-            <option value="1900">PM 07:00</option>
-            <option value="2000">PM 08:00</option>
-            <option value="2100">PM 09:00</option>
-            <option value="2200">PM 10:00</option>
-            <option value="2300">PM 11:00</option>
-            <option value="2400">PM 12:00</option>
-          </select>
+        <div id="container">
+          <h1>
+            <img src="" alt="" /> 날씨{" "}
+            {Number(dateTime) > 240000
+              ? (Number(dateString) - 1).toString()
+              : dateString}
+          </h1>
+          <div className={styles.timeSelect}>
+            <p>Time</p>
+            <select onChange={onChange} disabled={disabled} value={time}>
+              {selectTime.map((arr, index) => {
+                return (
+                  <option
+                    key={index}
+                    value={`${arr.toString().padStart(2, "0")}00`}
+                    disabled={dateTime.substring(0, 2) - 1 < index}
+                  >
+                    {arr.toString().padStart(2, "0")}:00
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+
           {weather.map((arr, index) => (
             <Weather
               key={index}
