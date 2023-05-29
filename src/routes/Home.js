@@ -42,7 +42,20 @@ function Home() {
           },
         },
       } = await response.data;
-      setWeather(item);
+      const WDN = {
+        baseDate: `${
+          Number(dateTime) > 240000
+            ? (Number(dateString) - 1).toString()
+            : dateString
+        }`,
+        baseTime: time,
+        category: "WDN",
+        nx: 55,
+        ny: 127,
+        obsrValue: [item[4].obsrValue, item[6].obsrValue],
+      };
+      const addWdn = [...item, WDN];
+      setWeather(addWdn);
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -60,6 +73,7 @@ function Home() {
   useEffect(() => {
     getWeather();
   }, [time, getWeather]);
+
   return (
     <div>
       {loading ? (
