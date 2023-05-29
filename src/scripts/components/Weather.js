@@ -8,8 +8,8 @@ import axios from "axios";
 import WeatherScreen from "../screens/WeatherScreen";
 
 // Style Import
-import "../styles/components/Weather.css";
-import styles from "../styles/components/Weather.module.css";
+import "../../styles/components/Weather.css";
+import styles from "../../styles/components/Weather.module.css";
 
 // ^ 사용자 정의 태그 생성
 export class WeatherElement extends HTMLElement {

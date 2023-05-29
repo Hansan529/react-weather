@@ -1,4 +1,4 @@
-import styles from "../styles/routes/Home.module.css";
+// import styles from "../styles/routes/Home.module.css";
 
 // Component Import
 import Header from "../components/Header";

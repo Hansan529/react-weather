@@ -1,4 +1,4 @@
-import styles from "../styles/screens/WeatherScreen.module.css";
+import styles from "../../styles/screens/WeatherScreen.module.css";
 import PropTypes from "prop-types";
 
 function WeatherScreen({ baseDate, baseTime, category, obsrValue }) {

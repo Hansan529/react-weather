@@ -1,5 +1,5 @@
 import { dateTime, dateString } from "../Date";
-import styles from "../styles/components/Header.module.css";
+import styles from "../../styles/components/Header.module.css";
 
 function Header() {
   const date = new Date();
