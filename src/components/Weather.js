@@ -1,7 +1,17 @@
-import PropTypes from "prop-types";
+// Dependencies Package Import
+import { useState, useEffect, useCallback } from "react";
+import { dateString, dateTime } from "../Date";
 import { Link } from "react-router-dom";
-import styles from "./Weather.module.css";
+import axios from "axios";
 
+// Component Import
+import WeatherScreen from "../screens/WeatherScreen";
+
+// Style Import
+import "../styles/components/Weather.css";
+import styles from "../styles/components/Weather.module.css";
+
+// ^ 사용자 정의 태그 생성
 export class WeatherElement extends HTMLElement {
   constructor() {
     super();
@@ -11,111 +21,103 @@ export class WeatherElement extends HTMLElement {
   disconnectedCallback() {}
   attributeChangedCallback() {}
 }
-function Weather({ baseDate, baseTime, category, obsrValue }) {
-  let info;
-  let result;
-  let icon;
-  obsrValue = Number(obsrValue);
-  baseTime = Number(baseTime);
+customElements.define("weather-component", WeatherElement);
 
-  switch (category) {
-    case "PTY":
-      info = "현재 날씨";
-      switch (obsrValue) {
-        case 0:
-          result = "맑음";
-          icon = baseTime < 1800 ? styles.clear : styles.clearN;
-          break;
-        case 1:
-          result = "비";
-          icon = styles.rain;
-          break;
-        case 2:
-          result = "비/눈";
-          icon = baseTime < 1800 ? styles.rain_snow : styles.rain_snowN;
-          break;
-        case 3:
-          result = "눈";
-          icon = baseTime < 1800 ? styles.snow : styles.snowN;
-          break;
-        default:
-          break;
-      }
-      break;
-    case "REH":
-      info = "상대 습도";
-      result = obsrValue + "%";
-      break;
-    case "RN1":
-      info = "1시간 강수량";
-      result = obsrValue !== 0 ? obsrValue + "mm" : "-";
-      break;
-    case "T1H":
-      info = "기온";
-      result = obsrValue + "℃";
-      break;
-    case "VEC":
-      info = "풍향";
-      result = obsrValue;
-      switch (true) {
-        case obsrValue === 0:
-          result = "북풍";
-          icon = styles.top;
-          break;
-        case obsrValue > 0 && obsrValue < 90:
-          result = "북동풍";
-          icon = styles.topRight;
-          break;
-        case obsrValue === 90:
-          result = "동풍";
-          icon = styles.right;
-          break;
-        case obsrValue > 90 && obsrValue < 180:
-          result = "남동풍";
-          icon = styles.bottomRight;
-          break;
-        case obsrValue === 180:
-          result = "남풍";
-          icon = styles.bottom;
-          break;
-        case obsrValue > 180 && obsrValue < 270:
-          result = "남서풍";
-          icon = styles.bottomLeft;
-          break;
-        case obsrValue === 270:
-          result = "서풍";
-          icon = styles.left;
-          break;
-        case obsrValue > 270 && obsrValue < 360:
-          result = "북서풍";
-          icon = styles.topLeft;
-          break;
-        default:
-          result = "-";
-          break;
-      }
-      break;
-    case "WSD":
-      info = "바람";
-      result = obsrValue + "m/s";
-      break;
+function Weather() {
+  const [loading, setLoading] = useState(true);
+  const [time, setTime] = useState(
+    `${(dateTime.substring(0, 2) - 1).toString().padStart(2, "0")}00`
+  );
+  const [weather, setWeather] = useState([]);
+  const [disabled, setDisabled] = useState(false);
 
-    default:
-      break;
-  }
+  const length = 24;
+  const selectTime = Array.from({ length }, (_, index) => index);
+  const getWeather = useCallback(async () => {
+    const url = `https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst`;
+    const options = {
+      serviceKey: process.env.REACT_APP_SERVICEKEY,
+      pageNo: 1,
+      numOfRows: 1000,
+      dataType: "JSON",
+      base_date:
+        Number(dateTime) > 240000
+          ? (Number(dateString) - 1).toString()
+          : dateString,
+      base_time: time,
+      nx: 55,
+      ny: 127,
+    };
+    try {
+      const resultUrl = decodeURIComponent(
+        new URLSearchParams(options).toString()
+      );
+      const response = await axios.get(`${url}?${resultUrl}`);
+
+      const {
+        response: {
+          body: {
+            items: { item },
+          },
+        },
+      } = await response.data;
+      setWeather(
+        item.filter(
+          (item) => item.category !== "UUU" && item.category !== "VVV"
+        )
+      );
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [time]);
+
+  // ^Select의 값이 변하면 time 변경, 1초동안 select 비활성화
+  const onChange = (e) => {
+    setDisabled(true);
+    setTime(e.currentTarget.value);
+    setTimeout(() => {
+      setDisabled(false);
+    }, 1000);
+  };
+
+  // ^ 최초 렌더링, time과 getWeather의 값이 변하면 재실행
+  useEffect(() => {
+    getWeather();
+  }, [time, getWeather]);
+
+  // ! 렌더링
   return (
-    <div>
-      <p>{info}</p>
-      {icon ? <i className={icon}></i> : null}
-      {result}
-    </div>
+    <main>
+      <div className={styles.timeSelect}>
+        <p>Time</p>
+        <select onChange={onChange} disabled={disabled} value={time}>
+          {selectTime.map((arr, index) => {
+            return (
+              <option
+                key={index}
+                value={`${arr.toString().padStart(2, "0")}00`}
+                disabled={dateTime.substring(0, 2) - 1 < index}
+              >
+                {arr.toString().padStart(2, "0")}시
+              </option>
+            );
+          })}
+        </select>
+      </div>
+      <weather-component>
+        {weather.map((arr, index) => (
+          <WeatherScreen
+            key={index}
+            baseDate={arr.baseDate}
+            baseTime={arr.baseTime}
+            category={arr.category}
+            obsrValue={arr.obsrValue}
+          />
+        ))}
+      </weather-component>
+    </main>
   );
 }
-
-Weather.propTypes = {
-  baseDate: PropTypes.string.isRequired,
-  baseTime: PropTypes.string.isRequired,
-  category: PropTypes.string.isRequired,
-};
 
 export default Weather;
