@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { dateString, dateTime } from "../Date";
 import axios from "axios";
-import Weather from "../components/Weather";
+import Weather, { WeatherElement } from "../components/Weather";
 import styles from "./Home.module.css";
+
+customElements.define("weather-component", WeatherElement);
 
 function Home() {
   const [loading, setLoading] = useState(true);
@@ -47,7 +49,6 @@ function Home() {
           (item) => item.category !== "UUU" && item.category !== "VVV"
         )
       );
-      console.log(weather);
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -67,7 +68,7 @@ function Home() {
   }, [time, getWeather]);
 
   return (
-    <div>
+    <>
       {loading ? (
         <h1>로딩 중...</h1>
       ) : (
@@ -94,19 +95,20 @@ function Home() {
               })}
             </select>
           </div>
-
-          {weather.map((arr, index) => (
-            <Weather
-              key={index}
-              baseDate={arr.baseDate}
-              baseTime={arr.baseTime}
-              category={arr.category}
-              obsrValue={arr.obsrValue}
-            />
-          ))}
+          <weather-component>
+            {weather.map((arr, index) => (
+              <Weather
+                key={index}
+                baseDate={arr.baseDate}
+                baseTime={arr.baseTime}
+                category={arr.category}
+                obsrValue={arr.obsrValue}
+              />
+            ))}
+          </weather-component>
         </div>
       )}
-    </div>
+    </>
   );
 }
 
