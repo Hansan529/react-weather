@@ -1,28 +1,18 @@
-// Dependencies Package Import
+//* Dependencies Package Import
 import { useState, useEffect, useCallback } from "react";
 import { dateString, dateTime } from "../config/Date";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-// Component Import
+//* Component Import
 import WeatherScreen from "../screens/WeatherScreen";
+import { currentLocation } from "../config/Geolocation";
 
-// Style Import
+//* Style Import
 import "../../styles/components/Weather.css";
 import styles from "../../styles/components/Weather.module.css";
 
-// ^ 사용자 정의 태그 생성
-export class WeatherElement extends HTMLElement {
-  constructor() {
-    super();
-  }
-
-  connectedCallback() {}
-  disconnectedCallback() {}
-  attributeChangedCallback() {}
-}
-customElements.define("weather-component", WeatherElement);
-
+//^ Component
 function Weather() {
   const [loading, setLoading] = useState(true);
   const [time, setTime] = useState(
@@ -30,11 +20,34 @@ function Weather() {
   );
   const [weather, setWeather] = useState([]);
   const [disabled, setDisabled] = useState(false);
+  const [coordinate, setCoordinate] = useState([]);
 
+  // 24번 option 생성하기 위한 가상 배열 생성
   const length = 24;
   const selectTime = Array.from({ length }, (_, index) => index);
+
+  // 위치 가져오기 성공
+  const getCurrentPosition = async (locationData) => {
+    await setCoordinate([
+      parseInt(locationData.latitude),
+      parseInt(locationData.longitude),
+    ]);
+  };
+
+  // 위치 가져오기 실패
+  const failCurrentPosition = (error) => {
+    console.log(error);
+  };
+
+  // 위치 정보 가져오기
+  useEffect(() => {
+    currentLocation(getCurrentPosition, failCurrentPosition);
+  }, []);
+
   const getWeather = useCallback(async () => {
-    const url = `https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst`;
+    // API 경로
+    const url = `https://apiServer.hxan.net/api/weather/`;
+    // API 파라미터 값
     const options = {
       serviceKey: process.env.REACT_APP_SERVICEKEY,
       pageNo: 1,
@@ -45,15 +58,23 @@ function Weather() {
           ? (Number(dateString) - 1).toString()
           : dateString,
       base_time: time,
-      nx: 55,
-      ny: 127,
+      nx:
+        Array.isArray(coordinate) && coordinate.length === 0
+          ? 37
+          : coordinate[0],
+      ny:
+        Array.isArray(coordinate) && coordinate.length === 0
+          ? 127
+          : coordinate[1],
     };
     try {
+      // 객체 목록을 파라미터로 변경
       const resultUrl = decodeURIComponent(
         new URLSearchParams(options).toString()
       );
-      const response = await axios.get(`${url}?${resultUrl}`);
-
+      // API 요청
+      const response = await axios.get(`${url}${resultUrl}`);
+      // API 데이터 콜백
       const {
         response: {
           body: {
@@ -61,16 +82,18 @@ function Weather() {
           },
         },
       } = await response.data;
+      // 날씨 설정
       setWeather(
         item.filter(
           (item) => item.category !== "UUU" && item.category !== "VVV"
         )
       );
+      // 로딩 종료
       setLoading(false);
     } catch (error) {
       console.error(error);
     }
-  }, [time]);
+  }, [time, coordinate]);
 
   // ^Select의 값이 변하면 time 변경, 1초동안 select 비활성화
   const onChange = (e) => {
@@ -81,10 +104,10 @@ function Weather() {
     }, 1000);
   };
 
-  // ^ 최초 렌더링, time과 getWeather의 값이 변하면 재실행
+  // ^ 최초 렌더링, 시간과 위치 값이 변하면 재실행
   useEffect(() => {
     getWeather();
-  }, [time, getWeather]);
+  }, [time, coordinate]);
 
   // ! 렌더링
   return (
@@ -92,7 +115,8 @@ function Weather() {
       {loading ? (
         <h2>로딩 중</h2>
       ) : (
-        <>
+        <center-component>
+          <h2>초단기실황조회</h2>
           <div className={styles.timeSelect}>
             <p>Time</p>
             <select onChange={onChange} disabled={disabled} value={time}>
@@ -120,7 +144,7 @@ function Weather() {
               />
             ))}
           </weather-component>
-        </>
+        </center-component>
       )}
     </main>
   );
