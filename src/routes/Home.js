@@ -42,20 +42,12 @@ function Home() {
           },
         },
       } = await response.data;
-      const WDN = {
-        baseDate: `${
-          Number(dateTime) > 240000
-            ? (Number(dateString) - 1).toString()
-            : dateString
-        }`,
-        baseTime: time,
-        category: "WDN",
-        nx: 55,
-        ny: 127,
-        obsrValue: [item[4].obsrValue, item[6].obsrValue],
-      };
-      const addWdn = [...item, WDN];
-      setWeather(addWdn);
+      setWeather(
+        item.filter(
+          (item) => item.category !== "UUU" && item.category !== "VVV"
+        )
+      );
+      console.log(weather);
       setLoading(false);
     } catch (error) {
       console.error(error);
