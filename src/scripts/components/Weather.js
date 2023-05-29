@@ -89,33 +89,39 @@ function Weather() {
   // ! 렌더링
   return (
     <main>
-      <div className={styles.timeSelect}>
-        <p>Time</p>
-        <select onChange={onChange} disabled={disabled} value={time}>
-          {selectTime.map((arr, index) => {
-            return (
-              <option
+      {loading ? (
+        <h2>로딩 중</h2>
+      ) : (
+        <>
+          <div className={styles.timeSelect}>
+            <p>Time</p>
+            <select onChange={onChange} disabled={disabled} value={time}>
+              {selectTime.map((arr, index) => {
+                return (
+                  <option
+                    key={index}
+                    value={`${arr.toString().padStart(2, "0")}00`}
+                    disabled={dateTime.substring(0, 2) - 1 < index}
+                  >
+                    {arr.toString().padStart(2, "0")}시
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <weather-component>
+            {weather.map((arr, index) => (
+              <WeatherScreen
                 key={index}
-                value={`${arr.toString().padStart(2, "0")}00`}
-                disabled={dateTime.substring(0, 2) - 1 < index}
-              >
-                {arr.toString().padStart(2, "0")}시
-              </option>
-            );
-          })}
-        </select>
-      </div>
-      <weather-component>
-        {weather.map((arr, index) => (
-          <WeatherScreen
-            key={index}
-            baseDate={arr.baseDate}
-            baseTime={arr.baseTime}
-            category={arr.category}
-            obsrValue={arr.obsrValue}
-          />
-        ))}
-      </weather-component>
+                baseDate={arr.baseDate}
+                baseTime={arr.baseTime}
+                category={arr.category}
+                obsrValue={arr.obsrValue}
+              />
+            ))}
+          </weather-component>
+        </>
+      )}
     </main>
   );
 }
