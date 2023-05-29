@@ -1,6 +1,16 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import styles from "./Weather.module.css";
 
+export class WeatherElement extends HTMLElement {
+  constructor() {
+    super();
+  }
+
+  connectedCallback() {}
+  disconnectedCallback() {}
+  attributeChangedCallback() {}
+}
 function Weather({ baseDate, baseTime, category, obsrValue }) {
   let info;
   let result;
@@ -40,7 +50,7 @@ function Weather({ baseDate, baseTime, category, obsrValue }) {
       result = obsrValue !== 0 ? obsrValue + "mm" : "-";
       break;
     case "T1H":
-      info = "현재 기온";
+      info = "기온";
       result = obsrValue + "℃";
       break;
     case "VEC":
@@ -49,27 +59,35 @@ function Weather({ baseDate, baseTime, category, obsrValue }) {
       switch (true) {
         case obsrValue === 0:
           result = "북풍";
+          icon = styles.top;
           break;
         case obsrValue > 0 && obsrValue < 90:
           result = "북동풍";
+          icon = styles.topRight;
           break;
         case obsrValue === 90:
           result = "동풍";
+          icon = styles.right;
           break;
         case obsrValue > 90 && obsrValue < 180:
           result = "남동풍";
+          icon = styles.bottomRight;
           break;
         case obsrValue === 180:
           result = "남풍";
+          icon = styles.bottom;
           break;
         case obsrValue > 180 && obsrValue < 270:
           result = "남서풍";
+          icon = styles.bottomLeft;
           break;
         case obsrValue === 270:
           result = "서풍";
+          icon = styles.left;
           break;
         case obsrValue > 270 && obsrValue < 360:
           result = "북서풍";
+          icon = styles.topLeft;
           break;
         default:
           result = "-";
@@ -85,10 +103,10 @@ function Weather({ baseDate, baseTime, category, obsrValue }) {
       break;
   }
   return (
-    <li>
+    <div>
       <p>{info}</p>
-      {result} <i className={icon}></i>
-    </li>
+      {result} <i className={`arrow ${icon}`}></i>
+    </div>
   );
 }
 
