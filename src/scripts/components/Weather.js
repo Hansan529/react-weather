@@ -1,6 +1,6 @@
 // Dependencies Package Import
 import { useState, useEffect, useCallback } from "react";
-import { dateString, dateTime } from "../Date";
+import { dateString, dateTime } from "../config/Date";
 import { Link } from "react-router-dom";
 import axios from "axios";
 

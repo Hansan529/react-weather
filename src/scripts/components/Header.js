@@ -1,4 +1,4 @@
-import { dateTime, dateString } from "../Date";
+import { dateTime, dateString } from "../config/Date";
 import styles from "../../styles/components/Header.module.css";
 
 function Header() {
