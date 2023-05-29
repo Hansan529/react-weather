@@ -16,6 +16,7 @@ function Weather({ baseDate, baseTime, category, obsrValue }) {
   let result;
   let icon;
   obsrValue = Number(obsrValue);
+  baseTime = Number(baseTime);
 
   switch (category) {
     case "PTY":
@@ -23,19 +24,19 @@ function Weather({ baseDate, baseTime, category, obsrValue }) {
       switch (obsrValue) {
         case 0:
           result = "맑음";
-          icon = "clear";
+          icon = baseTime < 1800 ? styles.clear : styles.clearN;
           break;
         case 1:
           result = "비";
-          icon = "rain";
+          icon = styles.rain;
           break;
         case 2:
           result = "비/눈";
-          icon = "rain-snow";
+          icon = baseTime < 1800 ? styles.rain_snow : styles.rain_snowN;
           break;
         case 3:
           result = "눈";
-          icon = "snow";
+          icon = baseTime < 1800 ? styles.snow : styles.snowN;
           break;
         default:
           break;
@@ -105,7 +106,8 @@ function Weather({ baseDate, baseTime, category, obsrValue }) {
   return (
     <div>
       <p>{info}</p>
-      {result} <i className={`arrow ${icon}`}></i>
+      {icon ? <i className={icon}></i> : null}
+      {result}
     </div>
   );
 }
