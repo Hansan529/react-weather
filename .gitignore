@@ -10,6 +10,9 @@
 # testing
 /coverage
 
+# server
+server.js
+
 # production
 /build
 
