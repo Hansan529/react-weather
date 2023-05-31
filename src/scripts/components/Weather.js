@@ -111,7 +111,11 @@ function Weather() {
         },
       } = await response.data;
       // 날씨 설정
-      setFcst(item);
+      setFcst(
+        item.filter(
+          (item) => item.category !== "UUU" && item.category !== "VVV"
+        )
+      );
       // 로딩 종료
     } catch (error) {
       console.error(error);
@@ -229,8 +233,7 @@ function Weather() {
               {ncst.map((arr, index) => (
                 <WeatherScreen
                   key={index}
-                  baseDate={arr.baseDate}
-                  baseTime={arr.baseTime}
+                  time={arr.baseTime}
                   category={arr.category}
                   value={arr.obsrValue}
                 />
@@ -266,12 +269,12 @@ function Weather() {
                 value={`${fcstTime.slice(0, 2)}:${fcstTime.slice(2, 4)}`}
               />
             </div>
-            <weather-component>
+            <weather-component class={styles.weather__gird6}>
               {fcst.map((arr, index) => (
                 <WeatherScreen
                   key={index}
-                  baseDate={arr.baseDate}
-                  baseTime={arr.baseTime}
+                  time={arr.baseTime}
+                  fcstTime={arr.fcstTime}
                   category={arr.category}
                   value={arr.fcstValue}
                 />
