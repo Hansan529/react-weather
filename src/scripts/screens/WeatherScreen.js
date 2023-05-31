@@ -1,19 +1,12 @@
 import styles from "../../styles/screens/WeatherScreen.module.css";
 import PropTypes from "prop-types";
 
-function WeatherScreen({
-  baseDate,
-  baseTime,
-  category,
-  value,
-  fcstDate,
-  fcstTime,
-}) {
+function WeatherScreen({ time, category, value, fcstDate, fcstTime }) {
   let info;
   let result;
   let icon;
   value = Number(value);
-  baseTime = Number(baseTime);
+  time = Number(time);
 
   switch (category) {
     // 공통
@@ -22,7 +15,7 @@ function WeatherScreen({
       switch (value) {
         case 0:
           result = "맑음";
-          icon = baseTime < 1800 ? styles.clear : styles.clearN;
+          icon = time < 1800 ? styles.clear : styles.clearN;
           break;
         case 1:
           result = "비";
@@ -30,11 +23,11 @@ function WeatherScreen({
           break;
         case 2:
           result = "비/눈";
-          icon = baseTime < 1800 ? styles.rain_snow : styles.rain_snowN;
+          icon = time < 1800 ? styles.rain_snow : styles.rain_snowN;
           break;
         case 3:
           result = "눈";
-          icon = baseTime < 1800 ? styles.snow : styles.snowN;
+          icon = time < 1800 ? styles.snow : styles.snowN;
           break;
         default:
           break;
@@ -46,7 +39,7 @@ function WeatherScreen({
       break;
     case "RN1":
       info = "1시간 강수량";
-      result = value !== 0 ? value + "mm" : "-";
+      result = value !== 0 && NaN ? value + "mm" : "-";
       break;
     case "T1H":
       info = "기온";
@@ -101,7 +94,20 @@ function WeatherScreen({
     case "LGT":
       info = "낙뢰";
       icon = "예정중";
-      result = value + "kA";
+      switch (true) {
+        case 1:
+          result = "보통 번개";
+          break;
+        case 2:
+          result = "강한 번개";
+          break;
+        case 3:
+          result = "매우 강한 번개";
+          break;
+        default:
+          result = "-";
+          break;
+      }
       break;
     case "SKY":
       info = "하늘상태";
@@ -125,9 +131,15 @@ function WeatherScreen({
   }
   return (
     <div>
+      {info === "낙뢰" ? (
+        <p>
+          {fcstTime.slice(0, 2)}:{fcstTime.slice(2, 4)}
+        </p>
+      ) : null}
+      {fcstDate ? <p>{fcstDate}</p> : null}
       <p>{info}</p>
       {icon ? <i className={icon}></i> : null}
-      {result}
+      <p>{result}</p>
     </div>
   );
 }
