@@ -1,17 +1,25 @@
 import styles from "../../styles/screens/WeatherScreen.module.css";
 import PropTypes from "prop-types";
 
-function WeatherScreen({ baseDate, baseTime, category, obsrValue }) {
+function WeatherScreen({
+  baseDate,
+  baseTime,
+  category,
+  value,
+  fcstDate,
+  fcstTime,
+}) {
   let info;
   let result;
   let icon;
-  obsrValue = Number(obsrValue);
+  value = Number(value);
   baseTime = Number(baseTime);
 
   switch (category) {
+    // 공통
     case "PTY":
       info = "현재 날씨";
-      switch (obsrValue) {
+      switch (value) {
         case 0:
           result = "맑음";
           icon = baseTime < 1800 ? styles.clear : styles.clearN;
@@ -34,49 +42,49 @@ function WeatherScreen({ baseDate, baseTime, category, obsrValue }) {
       break;
     case "REH":
       info = "상대 습도";
-      result = obsrValue + "%";
+      result = value + "%";
       break;
     case "RN1":
       info = "1시간 강수량";
-      result = obsrValue !== 0 ? obsrValue + "mm" : "-";
+      result = value !== 0 ? value + "mm" : "-";
       break;
     case "T1H":
       info = "기온";
-      result = obsrValue + "℃";
+      result = value + "℃";
       break;
     case "VEC":
       info = "풍향";
-      result = obsrValue;
+      result = value;
       switch (true) {
-        case obsrValue === 0:
+        case value === 0:
           result = "북풍";
           icon = styles.top;
           break;
-        case obsrValue > 0 && obsrValue < 90:
+        case value > 0 && value < 90:
           result = "북동풍";
           icon = styles.topRight;
           break;
-        case obsrValue === 90:
+        case value === 90:
           result = "동풍";
           icon = styles.right;
           break;
-        case obsrValue > 90 && obsrValue < 180:
+        case value > 90 && value < 180:
           result = "남동풍";
           icon = styles.bottomRight;
           break;
-        case obsrValue === 180:
+        case value === 180:
           result = "남풍";
           icon = styles.bottom;
           break;
-        case obsrValue > 180 && obsrValue < 270:
+        case value > 180 && value < 270:
           result = "남서풍";
           icon = styles.bottomLeft;
           break;
-        case obsrValue === 270:
+        case value === 270:
           result = "서풍";
           icon = styles.left;
           break;
-        case obsrValue > 270 && obsrValue < 360:
+        case value > 270 && value < 360:
           result = "북서풍";
           icon = styles.topLeft;
           break;
@@ -87,7 +95,29 @@ function WeatherScreen({ baseDate, baseTime, category, obsrValue }) {
       break;
     case "WSD":
       info = "바람";
-      result = obsrValue + "m/s";
+      result = value + "m/s";
+      break;
+    // Fcst
+    case "LGT":
+      info = "낙뢰";
+      icon = "예정중";
+      result = value + "kA";
+      break;
+    case "SKY":
+      info = "하늘상태";
+      switch (true) {
+        case value === 1:
+          result = "맑음";
+          break;
+        case value === 3:
+          result = "구름많음";
+          break;
+        case value === 4:
+          result = "흐림";
+          break;
+        default:
+          break;
+      }
       break;
 
     default:
