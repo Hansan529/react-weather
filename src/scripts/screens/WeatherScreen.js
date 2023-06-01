@@ -1,7 +1,7 @@
 import styles from "../../styles/screens/WeatherScreen.module.css";
 import PropTypes from "prop-types";
 
-function WeatherScreen({ time, category, value, fcstDate, fcstTime }) {
+function WeatherScreen({ date, time, category, value, fcstDate, fcstTime }) {
   let info;
   let result;
   let icon;
@@ -14,7 +14,7 @@ function WeatherScreen({ time, category, value, fcstDate, fcstTime }) {
       info = "현재 날씨";
       switch (value) {
         case 0:
-          result = "맑음";
+          result = time < 1800 ? "맑음" : "맑음 (밤)";
           icon = time < 1800 ? styles.clear : styles.clearN;
           break;
         case 1:
@@ -93,7 +93,7 @@ function WeatherScreen({ time, category, value, fcstDate, fcstTime }) {
     // Fcst
     case "LGT":
       info = "낙뢰";
-      icon = "예정중";
+      icon = value !== 0 ? styles.lgt : null;
       switch (true) {
         case 1:
           result = "보통 번개";
@@ -114,12 +114,15 @@ function WeatherScreen({ time, category, value, fcstDate, fcstTime }) {
       switch (true) {
         case value === 1:
           result = "맑음";
+          icon = time < 1800 ? styles.clear : styles.clearN;
           break;
         case value === 3:
           result = "구름많음";
+          icon = time < 1800 ? styles.cloudALot : styles.cloudALotN;
           break;
         case value === 4:
           result = "흐림";
+          icon = styles.cloudiness;
           break;
         default:
           break;
@@ -130,7 +133,7 @@ function WeatherScreen({ time, category, value, fcstDate, fcstTime }) {
       break;
   }
   return (
-    <div>
+    <div className={`${date}-${fcstTime}-${category}`}>
       {info === "낙뢰" ? (
         <p>
           {fcstTime.slice(0, 2)}:{fcstTime.slice(2, 4)}
@@ -138,7 +141,7 @@ function WeatherScreen({ time, category, value, fcstDate, fcstTime }) {
       ) : null}
       {fcstDate ? <p>{fcstDate}</p> : null}
       <p>{info}</p>
-      {icon ? <i className={icon}></i> : null}
+      {icon ? <i className={icon} title={result}></i> : null}
       <p>{result}</p>
     </div>
   );
