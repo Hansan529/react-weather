@@ -56,11 +56,18 @@ function Header() {
       <center-component>
         <h1 className={styles.logo__Wrap}>
           <Link to="/">
-            <img
-              src={`${process.env.PUBLIC_URL}/images/components/logo256.png`}
-              alt="logo"
-              className={styles.logo}
-            />
+            <picture>
+              <source
+                srcSet={`${process.env.PUBLIC_URL}/images/components/logo512.png`}
+                media="(-webkit-min-device-pixel-ratio: 2)"
+                type="image/png"
+                width="64"
+              />
+              <img
+                src={`${process.env.PUBLIC_URL}/images/components/logo64.png`}
+                alt="logo"
+              />
+            </picture>
             <small>기상청 단기예보</small>
           </Link>
         </h1>
@@ -76,6 +83,7 @@ function Header() {
             <p>
               {date.getMonth() + 1}월 {date.getDate()}일
             </p>
+            <p>접속: {window.devicePixelRatio > 1 ? "모바일" : "데스크탑"}</p>
           </li>
         </ul>
       </center-component>
