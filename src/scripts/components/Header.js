@@ -58,7 +58,7 @@ function Header() {
           <Link to="/">
             <picture>
               <source
-                srcSet={`${process.env.PUBLIC_URL}/images/components/logo512.png`}
+                srcSet={`${process.env.PUBLIC_URL}/images/components/logo256.png`}
                 media="(-webkit-min-device-pixel-ratio: 2)"
                 type="image/png"
                 width="64"
@@ -83,7 +83,10 @@ function Header() {
             <p>
               {date.getMonth() + 1}월 {date.getDate()}일
             </p>
-            <p>접속: {window.devicePixelRatio > 1 ? "모바일" : "데스크탑"}</p>
+            <p>
+              접속:{" "}
+              {window.devicePixelRatio > 1 ? "모바일 (HIDPI)" : "데스크탑"}
+            </p>
           </li>
         </ul>
       </center-component>
