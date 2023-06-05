@@ -1,13 +1,20 @@
 import styles from "../../styles/screens/WeatherScreen.module.css";
 import PropTypes from "prop-types";
 
-function WeatherScreen({ date, time, category, value, fcstDate, fcstTime }) {
+function WeatherScreen({
+  index,
+  date,
+  time,
+  category,
+  value,
+  fcstDate,
+  fcstTime,
+}) {
   let info;
   let result;
   let icon;
   value = Number(value);
   time = Number(time);
-
   switch (category) {
     // 공통
     case "PTY":
@@ -92,7 +99,7 @@ function WeatherScreen({ date, time, category, value, fcstDate, fcstTime }) {
       break;
     // Fcst
     case "LGT":
-      info = "낙뢰";
+      info = value !== 0 ? "낙뢰" : null;
       icon = value !== 0 ? styles.lgt : null;
       switch (true) {
         case 1:
@@ -105,7 +112,6 @@ function WeatherScreen({ date, time, category, value, fcstDate, fcstTime }) {
           result = "매우 강한 번개";
           break;
         default:
-          result = "-";
           break;
       }
       break;
@@ -133,16 +139,15 @@ function WeatherScreen({ date, time, category, value, fcstDate, fcstTime }) {
       break;
   }
   return (
-    <div className={`${date}-${fcstTime}-${category}`}>
-      {info === "낙뢰" ? (
+    <div className={`${date}-${fcstTime ? fcstTime : time}-${category}`}>
+      {index < 6 && fcstTime ? (
         <p>
           {fcstTime.slice(0, 2)}:{fcstTime.slice(2, 4)}
         </p>
       ) : null}
-      {fcstDate ? <p>{fcstDate}</p> : null}
-      <p>{info}</p>
+      {info ? <p>{info}</p> : null}
       {icon ? <i className={icon} title={result}></i> : null}
-      <p>{result}</p>
+      {result ? <p className={styles.flexFill}>{result}</p> : null}
     </div>
   );
 }
