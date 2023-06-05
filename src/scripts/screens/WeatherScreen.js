@@ -18,7 +18,7 @@ function WeatherScreen({
   switch (category) {
     // 공통
     case "PTY":
-      info = "현재 날씨";
+      info = "날씨";
       switch (value) {
         case 0:
           result = time < 1800 ? "맑음" : "맑음 (밤)";
