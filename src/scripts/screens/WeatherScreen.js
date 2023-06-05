@@ -1,5 +1,6 @@
 import styles from "../../styles/screens/WeatherScreen.module.css";
 import PropTypes from "prop-types";
+import device from "../config/Device";
 
 function WeatherScreen({
   index,
@@ -45,7 +46,8 @@ function WeatherScreen({
       result = value + "%";
       break;
     case "RN1":
-      info = "1시간 강수량";
+      info =
+        device === "Android" || device === "iOS" ? "강수량" : "1시간 강수량";
       result = value !== 0 && NaN ? value + "mm" : "-";
       break;
     case "T1H":
