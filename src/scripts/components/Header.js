@@ -1,9 +1,9 @@
-import { dateTime, dateString } from "../config/Date";
 import styles from "../../styles/components/Header.module.css";
-import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { coordinateToGrid, currentLocation } from "../config/Geolocation";
 import axios from "axios";
+import device from "../config/Device";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { currentLocation } from "../config/Geolocation";
 
 function Header() {
   const [locationCoordinate, setLocationCoordinate] = useState([
@@ -83,10 +83,7 @@ function Header() {
             <p>
               {date.getMonth() + 1}월 {date.getDate()}일
             </p>
-            <p>
-              접속:{" "}
-              {window.devicePixelRatio > 1 ? "모바일 (HIDPI)" : "데스크탑"}
-            </p>
+            <p>접속: {device}</p>
           </li>
         </ul>
       </center-component>
