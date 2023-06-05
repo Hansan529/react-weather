@@ -156,7 +156,7 @@ function Weather() {
     setNcstTime(e.currentTarget.value);
   };
   // 초단기실황 Show/Hide
-  const onClickNcst = (e) => {
+  const onClickNcst = () => {
     setNcstLoad(ncstLoad ? false : true);
     const childNode = document.querySelector("center-component h2").children[0];
     if (childNode.classList.contains("fa-angles-down")) {
@@ -171,6 +171,7 @@ function Weather() {
     disabledFnc();
     setFcstTime(e.currentTarget.value);
   };
+
   // 초단기예보 Show/Hide
   const onClickFcst = (e) => {
     setFcstLoad(fcstLoad ? false : true);
