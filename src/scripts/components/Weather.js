@@ -1,7 +1,6 @@
 //* Dependencies Package Import
 import { useState, useEffect, useCallback } from "react";
 import { dateString, dateTime } from "../config/Date";
-import { Link } from "react-router-dom";
 import axios from "axios";
 
 //* Component Import
@@ -18,7 +17,7 @@ function Weather() {
     `${(dateTime.substring(0, 2) - 1).toString().padStart(2, "0")}00`
   );
   const [fcstTime, setFcstTime] = useState(
-    `${(dateTime.substring(0, 2) - 1).toString().padStart(2, "0")}30`
+    `${dateTime.substring(0, 2).toString().padStart(2, "0")}00`
   );
   const [ncst, setNcst] = useState([]);
   const [ncstLoad, setNcstLoad] = useState("");
@@ -119,6 +118,7 @@ function Weather() {
       // 로딩 종료
     } catch (error) {
       console.error(error);
+      setFcstLoad(false);
     }
   }, [fcstTime, coordinate]);
   // ^ 함수
@@ -174,6 +174,11 @@ function Weather() {
     currentLocation(getCurrentPosition, failCurrentPosition);
   }, []);
 
+  // 초단기실황 1회 실행
+  useEffect(() => {
+    weatherNcst();
+    onClickNcst();
+  }, []);
   // 초단기실황
   useEffect(() => {
     weatherNcst();
@@ -189,6 +194,7 @@ function Weather() {
     <main>
       <center-component>
         <h2
+          className={`onClick ${styles.onClickMargin}`}
           onClick={onClickNcst}
           title="30분에 생성되고, 10분마다 정보 업데이트"
         >
@@ -210,7 +216,6 @@ function Weather() {
         {ncstLoad ? (
           <div className="hiddenContent">
             <div className={styles.timeSelect}>
-              <p>Time</p>
               <select
                 onChange={onChangeNcstTime}
                 disabled={disabled}
@@ -220,7 +225,11 @@ function Weather() {
                   return (
                     <option
                       key={index}
-                      value={`${arr.toString().padStart(2, "0")}00`}
+                      value={
+                        arr === 0
+                          ? "2400"
+                          : `${arr.toString().padStart(2, "0")}00`
+                      }
                       disabled={dateTime.substring(0, 2) - 1 < index}
                     >
                       {arr.toString().padStart(2, "0")}시
@@ -229,10 +238,12 @@ function Weather() {
                 })}
               </select>
             </div>
-            <weather-component>
+            <weather-component class={styles.weather__result}>
               {ncst.map((arr, index) => (
                 <WeatherScreen
                   key={index}
+                  index={index}
+                  date={arr.baseDate}
                   time={arr.baseTime}
                   category={arr.category}
                   value={arr.obsrValue}
@@ -242,6 +253,7 @@ function Weather() {
           </div>
         ) : null}
         <h2
+          className={`onClick ${styles.onClickMargin}`}
           onClick={onClickFcst}
           title="30분에 생성되고 10분마다 정보 업데이트(기온, 습도, 바람)"
         >
@@ -261,18 +273,34 @@ function Weather() {
         {fcstLoad ? (
           <div className="hiddenContent">
             <div className={styles.timeSelect}>
-              <p>Time</p>
-              {fcstTime}
-              <input
-                type="time"
+              <select
                 onChange={onChangeFcstTime}
-                value={`${fcstTime.slice(0, 2)}:${fcstTime.slice(2, 4)}`}
-              />
+                disabled={disabled}
+                value={`${fcstTime.substring(0, 2)}00`}
+              >
+                {selectTime.map((arr, index) => {
+                  return (
+                    <option
+                      key={index}
+                      value={
+                        arr === 0
+                          ? "2400"
+                          : `${arr.toString().padStart(2, "0")}00`
+                      }
+                      disabled={dateTime.substring(0, 2) < index}
+                    >
+                      {index.toString().padStart(2, "0")}시
+                    </option>
+                  );
+                })}
+              </select>
             </div>
             <weather-component class={styles.weather__gird6}>
               {fcst.map((arr, index) => (
                 <WeatherScreen
                   key={index}
+                  index={index}
+                  date={arr.baseDate}
                   time={arr.baseTime}
                   fcstTime={arr.fcstTime}
                   category={arr.category}
