@@ -17,7 +17,9 @@ function Weather() {
     `${(dateTime.substring(0, 2) - 1).toString().padStart(2, "0")}00`
   );
   const [fcstTime, setFcstTime] = useState(
-    `${dateTime.substring(0, 2).toString().padStart(2, "0")}00`
+    dateTime.substring(2, 4) >= 30
+      ? `${dateTime.substring(0, 2)}00`
+      : `${dateTime.substring(0, 2) - 1}30`
   );
   const [ncst, setNcst] = useState([]);
   const [ncstLoad, setNcstLoad] = useState("");
@@ -154,8 +156,14 @@ function Weather() {
     setNcstTime(e.currentTarget.value);
   };
   // 초단기실황 Show/Hide
-  const onClickNcst = () => {
+  const onClickNcst = (e) => {
     setNcstLoad(ncstLoad ? false : true);
+    const childNode = document.querySelector("center-component h2").children[0];
+    if (childNode.classList.contains("fa-angles-down")) {
+      childNode.classList.replace("fa-angles-down", "fa-angles-up");
+    } else {
+      childNode.classList.replace("fa-angles-up", "fa-angles-down");
+    }
   };
 
   // 초단기예보 시간 변화
@@ -164,8 +172,14 @@ function Weather() {
     setFcstTime(e.currentTarget.value);
   };
   // 초단기예보 Show/Hide
-  const onClickFcst = () => {
+  const onClickFcst = (e) => {
     setFcstLoad(fcstLoad ? false : true);
+    const childNode = e.target.children[0];
+    if (childNode.classList.contains("fa-angles-down")) {
+      childNode.classList.replace("fa-angles-down", "fa-angles-up");
+    } else {
+      childNode.classList.replace("fa-angles-up", "fa-angles-down");
+    }
   };
 
   // ^ 비연속적 렌더링 방식
@@ -194,11 +208,12 @@ function Weather() {
     <main>
       <center-component>
         <h2
-          className={`onClick ${styles.onClickMargin}`}
+          className={`onClick ${styles.onClickStyle}`}
           onClick={onClickNcst}
           title="30분에 생성되고, 10분마다 정보 업데이트"
         >
           초단기실황조회
+          <i className={`${styles.titleIcon} fa-solid fa-angles-down`}></i>
         </h2>
         {/* 
           초단기실황
@@ -253,11 +268,12 @@ function Weather() {
           </div>
         ) : null}
         <h2
-          className={`onClick ${styles.onClickMargin}`}
+          className={`onClick ${styles.onClickStyle}`}
           onClick={onClickFcst}
           title="30분에 생성되고 10분마다 정보 업데이트(기온, 습도, 바람)"
         >
           초단기예보조회
+          <i className={`${styles.titleIcon} fa-solid fa-angles-down`}></i>
         </h2>
         {/* 
           초단기예보
@@ -287,7 +303,11 @@ function Weather() {
                           ? "2400"
                           : `${arr.toString().padStart(2, "0")}00`
                       }
-                      disabled={dateTime.substring(0, 2) < index}
+                      disabled={
+                        Number(dateTime.substring(2, 4)) < 30
+                          ? Number(dateTime.substring(0, 2) - 1) < index
+                          : dateTime.substring(0, 2) < index
+                      }
                     >
                       {index.toString().padStart(2, "0")}시
                     </option>
