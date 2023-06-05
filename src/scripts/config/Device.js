@@ -15,12 +15,12 @@ switch (true) {
     (touch > 1 && screenWidth >= 375 && screenWidth < 744):
     environmentResult = "iOS";
     break;
-  // iPad 744 ~ 1200
+  // iPad 744 ~ 1024
   case Boolean(environment.match(/iPad/i)) ||
-    (touch > 1 && screenWidth >= 744 && screenWidth < 1024):
+    (touch > 1 && screenWidth >= 744 && screenWidth <= 1024):
     environmentResult = "iPad OS";
     break;
-  // Mac 1200 ~
+  // Mac 1024 ~
   case Boolean(environment.match(/Mac OS/i)) ||
     (touch === 0 && screenWidth >= 1024):
     environmentResult = "Mac OS";
