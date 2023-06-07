@@ -16,14 +16,23 @@ function WeatherScreen({
   let icon;
   value = Number(value);
   time = Number(time);
+  let hour;
+  if (fcstTime) {
+    hour = Number(fcstTime.substring(0, 2));
+  }
+
   switch (category) {
     // 공통
     case "PTY":
       info = "날씨";
       switch (value) {
         case 0:
-          result = time < 1800 ? "맑음" : "맑음 (밤)";
-          icon = time < 1800 ? styles.clear : styles.clearN;
+          result =
+            time < 1800 || (hour >= 6 && hour < 19) ? "맑음" : "맑음 (밤)";
+          icon =
+            time < 1800 || (hour >= 6 && hour < 19)
+              ? styles.clear
+              : styles.clearN;
           break;
         case 1:
           result = "비";
@@ -31,11 +40,17 @@ function WeatherScreen({
           break;
         case 2:
           result = "비/눈";
-          icon = time < 1800 ? styles.rain_snow : styles.rain_snowN;
+          icon =
+            time < 1800 || (hour >= 6 && hour < 19)
+              ? styles.rain_snow
+              : styles.rain_snowN;
           break;
         case 3:
           result = "눈";
-          icon = time < 1800 ? styles.snow : styles.snowN;
+          icon =
+            time < 1800 || (hour >= 6 && hour < 19)
+              ? styles.snow
+              : styles.snowN;
           break;
         default:
           break;
