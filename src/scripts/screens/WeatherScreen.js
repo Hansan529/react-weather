@@ -28,9 +28,11 @@ function WeatherScreen({
       switch (value) {
         case 0:
           result =
-            time < 1800 || (hour >= 6 && hour < 19) ? "맑음" : "맑음 (밤)";
+            (fcstTime ? null : time < 1800) || (hour >= 6 && hour < 19)
+              ? "맑음"
+              : "맑음 (밤)";
           icon =
-            time < 1800 || (hour >= 6 && hour < 19)
+            (fcstTime ? null : time < 1800) || (hour >= 6 && hour < 19)
               ? styles.clear
               : styles.clearN;
           break;
@@ -41,14 +43,14 @@ function WeatherScreen({
         case 2:
           result = "비/눈";
           icon =
-            time < 1800 || (hour >= 6 && hour < 19)
+            (fcstTime ? null : time < 1800) || (hour >= 6 && hour < 19)
               ? styles.rain_snow
               : styles.rain_snowN;
           break;
         case 3:
           result = "눈";
           icon =
-            time < 1800 || (hour >= 6 && hour < 19)
+            (fcstTime ? null : time < 1800) || (hour >= 6 && hour < 19)
               ? styles.snow
               : styles.snowN;
           break;
