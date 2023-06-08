@@ -20,7 +20,6 @@ function WeatherScreen({
   if (fcstTime) {
     hour = Number(fcstTime.substring(0, 2));
   }
-
   switch (category) {
     // 공통
     case "PTY":
@@ -53,6 +52,18 @@ function WeatherScreen({
             (fcstTime ? null : time < 1800) || (hour >= 6 && hour < 19)
               ? styles.snow
               : styles.snowN;
+          break;
+        case 5:
+          result = "빗방울";
+          icon = styles.dropsOfRain;
+          break;
+        case 6:
+          result = "빗방울/눈날림";
+          icon = styles.dropsOfRainAndSnow;
+          break;
+        case 7:
+          result = "눈날림";
+          icon = styles.dropsOfSnow;
           break;
         default:
           break;
