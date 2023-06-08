@@ -85,6 +85,12 @@ function Footer() {
           </ul>
         </div>
         <div className={styles.userAgent}>{navigator.userAgent}</div>
+        <a
+          href="https://www.flaticon.com/free-icons/weather-forecast"
+          title="weather forecast icons"
+        >
+          Weather forecast icons created by Rosa Suave - Flaticon
+        </a>
       </center-component>
     </footer>
   );
