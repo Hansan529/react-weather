@@ -38,7 +38,6 @@ function Weather() {
     const url = `https://apiServer.hxan.net/api/weather/ncst/`;
     // API 파라미터 값
     const options = {
-      serviceKey: process.env.REACT_APP_SERVICEKEY,
       pageNo: 1,
       numOfRows: 1000,
       dataType: "JSON",
@@ -83,7 +82,6 @@ function Weather() {
     const url = `https://apiServer.hxan.net/api/weather/fcst/`;
     // API 파라미터 값
     const options = {
-      serviceKey: process.env.REACT_APP_SERVICEKEY,
       pageNo: 1,
       numOfRows: 1000,
       dataType: "JSON",

@@ -28,13 +28,7 @@ function Header() {
     // API 요청
     const { documents } = await (
       await axios.get(
-        `https://apiServer.hxan.net/api/coordinate/coord2Address/${params}`,
-        {
-          headers: {
-            Authorization: `KakaoAK ${process.env.REACT_APP_KAKAO_REST_API_KEY}`,
-          },
-        }
-      )
+        `https://apiServer.hxan.net/api/coordinate/coord2Address/${params}`)
     ).data;
     const { address } = documents[0];
     setAddress(address);
