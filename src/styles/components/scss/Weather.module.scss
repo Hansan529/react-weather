@@ -54,7 +54,8 @@
 .titleIcon {
   position: absolute;
   left: 60%;
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
   width: 20px;
   height: 20px;
 

@@ -15,11 +15,13 @@ import styles from "../../styles/components/Weather.module.css";
 function Weather() {
   const [ncstTime, setNcstTime] = useState(
     `${(dateTime.substring(0, 2) - 1).toString().padStart(2, "0")}00`
-  );
-  const [fcstTime, setFcstTime] = useState(
-    dateTime.substring(2, 4) >= 30
-      ? `${dateTime.substring(0, 2)}00`
-      : `${dateTime.substring(0, 2) - 1}30`
+    );
+    const [fcstTime, setFcstTime] = useState(
+    `${(dateTime.substring(0, 2) - 1).toString().padStart(2, "0")}00`
+    // dateTime.substring(2, 4) >= 30
+    //   ? `${dateTime.substring(0, 2)}00`
+    //   : 
+    //   `${(String(dateTime.substring(0, 2) - 1).length === 1) ? "0" + dateTime.substring(0,2) -1 : dateTime.substring(0,2)-1}30`
   );
   const [ncst, setNcst] = useState([]);
   const [ncstLoad, setNcstLoad] = useState("");
@@ -100,7 +102,7 @@ function Weather() {
         new URLSearchParams(options).toString()
       );
       // API 요청
-      const response = await axios.get(url + resultUrl);
+      const response = await axios.get(`${url}${resultUrl}`);
       // API 데이터 콜백
       const {
         response: {
