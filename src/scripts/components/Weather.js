@@ -156,12 +156,6 @@ function Weather() {
   // 초단기실황 Show/Hide
   const onClickNcst = () => {
     setNcstLoad(ncstLoad ? false : true);
-    const childNode = document.querySelector("center-component h2").children[0];
-    if (childNode.classList.contains("fa-angles-down")) {
-      childNode.classList.replace("fa-angles-down", "fa-angles-up");
-    } else {
-      childNode.classList.replace("fa-angles-up", "fa-angles-down");
-    }
   };
 
   // 초단기예보 시간 변화
@@ -173,12 +167,6 @@ function Weather() {
   // 초단기예보 Show/Hide
   const onClickFcst = (e) => {
     setFcstLoad(fcstLoad ? false : true);
-    const childNode = e.target.children[0];
-    if (childNode.classList.contains("fa-angles-down")) {
-      childNode.classList.replace("fa-angles-down", "fa-angles-up");
-    } else {
-      childNode.classList.replace("fa-angles-up", "fa-angles-down");
-    }
   };
 
   // ^ 비연속적 렌더링 방식
@@ -202,6 +190,9 @@ function Weather() {
     weatherFcst();
   }, [fcstTime, weatherFcst, coordinate]);
 
+  // 조회 버튼 아이콘 설정
+  const moreBtn = (status) => <img src={`${process.env.PUBLIC_URL}/images/icons/angles-${status}-solid.svg`} alt="더보기" />;
+
   // ! 렌더링
   return (
     <main>
@@ -212,7 +203,9 @@ function Weather() {
           title="30분에 생성되고, 10분마다 정보 업데이트"
         >
           초단기실황조회
-          <i className={`${styles.titleIcon} fa-solid fa-angles-down`}></i>
+          <i className={`${styles.titleIcon} fa-solid fa-angles-down`}>
+            {ncstLoad ? moreBtn("up") : moreBtn("down")}
+          </i>
         </h2>
         {/* 
           초단기실황
@@ -272,7 +265,9 @@ function Weather() {
           title="30분에 생성되고 10분마다 정보 업데이트(기온, 습도, 바람)"
         >
           초단기예보조회
-          <i className={`${styles.titleIcon} fa-solid fa-angles-down`}></i>
+          <i className={`${styles.titleIcon}`}>
+          {fcstLoad ? moreBtn("up") : moreBtn("down")}
+          </i>
         </h2>
         {/* 
           초단기예보
