@@ -1,0 +1,125 @@
+.icon {
+  display: block;
+  width: 30px;
+  height: 30px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  margin: 10px auto;
+}
+
+.arrow {
+  @extend .icon;
+  background-image: url("/public/images/icons/ic_wd_48x.png");
+}
+
+.top {
+  @extend .arrow;
+  rotate: 180deg;
+}
+.topRight {
+  @extend .arrow;
+  rotate: -135deg;
+}
+.right {
+  @extend .arrow;
+  rotate: -90deg;
+}
+.bottomRight {
+  @extend .arrow;
+  rotate: -45deg;
+}
+.bottom {
+  @extend .arrow;
+  rotate: 0;
+}
+.bottomLeft {
+  @extend .arrow;
+  rotate: 45deg;
+}
+.left {
+  @extend .arrow;
+  rotate: 90deg;
+}
+.topLeft {
+  @extend .arrow;
+  rotate: 135deg;
+}
+
+.clear {
+  @extend .icon;
+  background-image: url("/public/images/icons/NB01.png");
+}
+
+.clearN {
+  @extend .icon;
+  background-image: url("/public/images/icons/NB01_N.png");
+}
+
+.rain {
+  @extend .icon;
+  background-image: url("/public/images/icons/NB08.png");
+}
+
+.rain_snow,
+.rain_snowN {
+  @extend .icon;
+  background-image: url("/public/images/icons/NB12.png");
+}
+
+.snow {
+  @extend .icon;
+  background-image: url("/public/images/icons/NB11.png");
+}
+.snowN {
+  @extend .icon;
+  background-image: url("/public/images/icons/NB11.png");
+}
+
+.cloudiness {
+  @extend .icon;
+  background-image: url("/public/images/icons/NB04.png");
+}
+.cloudFew {
+  @extend .icon;
+  background-image: url("/public/images/icons/NB02.png");
+}
+.cloudFewN {
+  @extend .icon;
+  background-image: url("/public/images/icons/NB02_N.png");
+}
+
+.cloudALot {
+  @extend .icon;
+  background-image: url("/public/images/icons/NB03.png");
+}
+.cloudALotN {
+  @extend .icon;
+  background-image: url("/public/images/icons/NB03_N.png");
+}
+
+.dropsOfRain {
+  @extend .icon;
+  background-image: url("/public/images/icons/DB10.png");
+}
+
+.dropsOfRainAndSnow {
+  @extend .icon;
+  background-image: url("/public/images/icons/DB11.png");
+}
+.dropsOfSnow {
+  @extend .icon;
+  background-image: url("/public/images/icons/DB12.png");
+}
+
+.lgt {
+  @extend .icon;
+  background-image: url("/public/images/icons/DB_LGT.png");
+}
+
+.flexFill {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

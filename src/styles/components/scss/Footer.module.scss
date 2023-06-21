@@ -1,0 +1,32 @@
+@import "../../config//variables";
+
+footer {
+  ul {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    li {
+      a {
+        display: flex;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        i {
+          margin-right: 5px;
+
+          &.kakaoLogo {
+            border-radius: 50%;
+            background-color: #fee500;
+            padding: 2.5px;
+          }
+        }
+      }
+    }
+  }
+  .userAgent {
+    margin: 10px 0;
+    word-break: keep-all;
+    font-size: 12px;
+  }
+}

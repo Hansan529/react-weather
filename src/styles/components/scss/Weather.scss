@@ -1,0 +1,31 @@
+@import "../../config/_variables.scss";
+
+weather-component {
+  display: flex;
+  justify-content: center;
+  gap: 100px;
+  margin-bottom: 30px;
+
+  @include resMax {
+    gap: 20px;
+  }
+  @include resMid {
+    gap: 15px;
+  }
+
+  div {
+    text-align: center;
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  .hiddenContent {
+    width: 100%;
+  }
+}
+
+.onClick {
+  cursor: pointer;
+}

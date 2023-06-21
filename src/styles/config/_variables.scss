@@ -1,0 +1,23 @@
+@mixin res($px: null) {
+  @media screen and (max-width: $px) {
+    @content;
+  }
+}
+
+@mixin resMin($px: 320px) {
+  @media screen and (max-width: $px) {
+    @content;
+  }
+}
+
+@mixin resMid($px: 743px) {
+  @media screen and (max-width: $px) {
+    @content;
+  }
+}
+
+@mixin resMax($px: 1024px) {
+  @media screen and (max-width: $px) {
+    @content;
+  }
+}

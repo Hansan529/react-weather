@@ -1,0 +1,13 @@
+@import "../config/reset";
+@import "../config/variables";
+
+body {
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+center-component {
+  display: block;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}

@@ -1,0 +1,40 @@
+@import "../../config/variables";
+
+header {
+  width: 100%;
+
+  center-component {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+
+    @include resMid {
+      width: 100%;
+      padding: 0px 10px;
+    }
+  }
+}
+
+.logo__Wrap {
+  padding: 10px 0 10px 30px;
+
+  @include resMid {
+    padding: 10px;
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 24px;
+    @include resMid {
+      font-size: 16px;
+      gap: 5px;
+    }
+  }
+}
+.logo {
+  width: 60px;
+  height: 60px;
+}
