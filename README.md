@@ -118,4 +118,4 @@
 └── yarn.lock
 ```
 
-## [업데이트 내역 (CHANGELOG)](https://github.com/Hansan529/react-weather/CHANGELOG.md)
+## [업데이트 내역 (CHANGELOG)](https://github.com/Hansan529/react-weather/blob/main/CHANGELOG.md)
