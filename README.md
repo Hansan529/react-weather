@@ -11,10 +11,10 @@
 
 ## 홈페이지 배포 주소
 
-> 프론트 서버: null  
-> 백엔드 서버: https://react-weather.hxan.net
+> 프론트 서버: https://react-weather.hxan.net  
+> 백엔드 서버: https://apiServer.hxan.net
 
-> 백엔드에서 정적파일을 출력하는 형태로 별도의 프론트용 서버가 존재하지는 않는다.
+> 백엔드 서버는 별도의 페이지를 렌더하지 않음
 
 ## 프로젝트 소개
 
