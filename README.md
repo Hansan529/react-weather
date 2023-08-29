@@ -11,10 +11,10 @@
 
 ## 홈페이지 배포 주소
 
-> 프론트 서버: https://react-weather.hxan.net  
-> 백엔드 서버: https://apiServer.hxan.net
+> 프론트 서버: ~~https://react-weather.hxan.net~~  
+> 백엔드 서버: ~~https://apiServer.hxan.net~~
 
-> 백엔드 서버는 별도의 페이지를 렌더하지 않음
+배포 취소
 
 ## 프로젝트 소개
 
